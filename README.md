@@ -44,6 +44,7 @@ var obj1 = { size: 10, empty: false };
 var obj2 = new Object({ size: 12, empty: true});
 obj1.constructor === Object  // true
 obj2.constructor  // [Function: Object]
+obj1.constructor === obj2.contructor // true
 ```
 
 Let's spice things up a bit with a constructor that actually takes some parameters..
@@ -74,3 +75,80 @@ person2.sayName();            // 'Jad is my name.'
 Now that you can create a bunch of objects with the same properties and methods, you might think constructors are a great way to reduce code redundancy. However, for each instance you create, a copy of the properties are made, too. For example, even though the ```sayName``` function is no different between each instance, a separate copy is made for every object instance! If you had 1,000 instances of the ```Person``` class, you'd have 1,000 copies of that function, doing the same exact thing. Wouldn't it be way more efficient if all the instances could share just one copy of that method? Well yes, it would, and that is why JavaScript has **Prototypes**..
 
 ##Prototypes
+JavaScript Prototypes are like blueprints for objects. Almost every function (besides some of the built-in ones) has a ```prototype``` property that is used when creating new instances, and every instance of the same type shares access to the properties of the prototype. Maybe an example using an instance of the built-in ```Object``` constructor function will make this clearer:
+```javascript
+var band = { name: "Reverse Peristalsis" };
+
+band.constructor === Object  // true
+```
+Even though we've only defined one property on this object (the ```name``` property), look at all the properties it already has:
+```
+band.__defineGetter__      band.__defineSetter__      band.__lookupGetter__
+band.__lookupSetter__      band.__proto__             band.constructor
+band.hasOwnProperty        band.isPrototypeOf         band.propertyIsEnumerable
+band.toLocaleString        band.toString              band.valueOf
+
+band.name   
+```
+The twelve properties above that I didn't define are there because they are defined on the built-in ```Object.prototype``` object, and since ```band``` is an instance of ```Object```, it automatically has access to all of those properties. You can use the ```in``` operator to find out if a property exists on an object or its prototype. If you ever need to figure out which properties are part of the prototype and which were defined within the constructor, the ```hasOwnProperty()``` method can be used to determine that:
+```javascript
+console.log("name" in band);                                    // true
+console.log(band.hasOwnProperty("name"));                       // true
+console.log("hasOwnProperty" in band);                          // true
+console.log(band.hasOwnProperty("hasOwnProperty"));             // false
+console.log(Object.prototype.hasOwnProperty("hasOwnProperty")); // true
+```
+So ```in``` returns ```true``` for both prototype properties *and* own properties, and ```hasOwnProperty()``` only returns true on own properties, or properties defined within the constructor. Can you create a function that determines whether a given property is a prototype property?
+
+```javascript
+function hasPrototypeProperty(object, name) {
+  return name in object && !object.hasOwnProperty(name);
+}
+```
+###Using Prototypes with Constructors
+Since prototype properties are shared between all instances of a class or constructor function, we can define a property on the prototype of the constructor and it will be available to all instances created after its definition. It's much more efficient to put a method on the prototype and then use ```this``` to access the current instance, instead of defining the method within the constructor:
+```javascript
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+Person.prototype.sayName = function() {
+  console.log(this.name + " is my name.");
+};
+
+var person1 = new Person("David", 100);
+var person1 = new Person("Melissa", 99);
+
+person1.sayName(); // 'David is my name.'
+person2.sayName(); // 'Melissa is my name.'
+```
+The prototype of an object is stored internally in the [[Prototype]] property, or ```__proto__``` in most JS engines. This property is a reference, not a copy, so if you change the prototype at any point in time, the changes occur on all instances of the class.
+```javascript
+function Person(name) {
+  this.name = name;
+}
+
+var person1 = new Person("Lynne");
+
+'sayName' in person1 // false
+
+Person.prototype.sayName = function() {
+  console.log(this.name + " is my name.");
+}
+
+'sayName' in person1 // true
+person1.sayName();  // 'Lynne is my name.'
+```
+
+You can even alter built-in Object prototypes.. say you want to implement a ```sum``` method on the Array prototype:
+```javascript
+Array.prototype.sum = function() {
+  return this.reduce(function(a, b) {
+    return a + b;
+  });
+}
+
+var result= [1,2,3,4,5].sum();
+console.log(result); // 15
+```
