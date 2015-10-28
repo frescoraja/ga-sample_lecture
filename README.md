@@ -56,7 +56,7 @@ function Person(name, age) {
   };
 }
 ```
-This ```Person``` constructor accepts two named parameters, ```name``` and ```age```, and assigns them to properties on the ```this``` object with the same names. It also adds a method called ```sayName()``` to the object. The ```this``` object is automatically created by using the ```new``` keyword when calling the constructor, and it is an instance of the constructor's type. It is implicitly return by the function, so there's no need to inlude a ```return``` statement within your constructor function. If you do, and the return value is an object, it will return the object instead of the newly created instance of the class. If the return value is a primitive, it will be ignored and the new instance will be returned.
+This ```Person``` constructor accepts two named parameters, ```name``` and ```age```, and assigns them to properties on the ```this``` object with the same names. It also adds a method called ```sayName()``` to the object. The ```this``` object is automatically created by using the ```new``` keyword when calling the constructor, and it is an instance of the constructor's type. It is implicitly returned by the function, so there's no need to include a ```return``` statement within your constructor function. If you do, and the return value is an object, it will return the object instead of the newly created instance of the class. If the return value is a primitive, it will be ignored and the new instance will be returned.
 
 Now you can use the ```Person``` constructor to create objects that are initialized with ```name``` and ```age``` properties:
 ```javascript
@@ -71,3 +71,6 @@ person1.sayName();            // 'Billy is my name.'
 person2.sayName();            // 'Jad is my name.'
 ```
 
+Now that you can create a bunch of objects with the same properties and methods, you might think constructors are a great way to reduce code redundancy. However, for each instance you create, a copy of the properties are made, too. For example, even though the ```sayName``` function is no different between each instance, a separate copy is made for every object instance! If you had 1,000 instances of the ```Person``` class, you'd have 1,000 copies of that function, doing the same exact thing. Wouldn't it be way more efficient if all the instances could share just one copy of that method? Well yes, it would, and that is why JavaScript has **Prototypes**..
+
+##Prototypes
