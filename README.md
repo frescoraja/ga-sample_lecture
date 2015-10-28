@@ -32,7 +32,7 @@ var person2 = new Person;
 ```
 When you have no parameters to pass into the constructor, the parentheses are optional.. but NOT the ```new``` keyword (more on that later)!
 
-Even though we don't explicitly return anything from our constructor function, ```person1``` and ```person2``` are both instances of the ```Person``` type. Dubious? try the following code:
+Even though we don't explicitly return anything from our constructor function, ```person1``` and ```person2``` are both instances of the ```Person``` type:
 ```javascript
 console.log(person1 instanceof Person);  // true
 console.log(person2 instanceof Person);  // true
