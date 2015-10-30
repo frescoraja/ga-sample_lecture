@@ -149,6 +149,15 @@ Array.prototype.sum = function() {
   });
 }
 
-var result= [1,2,3,4,5].sum();
+var result = [1,2,3,4,5].sum();
 console.log(result); // 15
 ```
+Even though it's possible, I wouldn't recommend altering built-in object prototypes in a production environment... This would make default behaviors unpredictable, especially for other coders trying to user your code.
+
+##Summary
+Constructors are just normal functions that are called with the ```new``` operator to generate objects with the same properties. In this way, they are like classes in strictly object oriented languages. You can identify an object's constructor accessing the ```constructor``` property or using the ```instanceof``` operator.
+Every function has a ```prototype``` property that defines any properties shared by objects created with the same constructor. Shared methods and primitive value properties are typically defined on the prototype, with all other properties defined within the constructor. An example of a prototype property shared by all instances is the ```constructor``` property itself.
+
+##Inheritance
+We've seen how to create objects and simulate class-like behavior in JavaScript - the necessary first-step in understanding object oriented programming in JavaScript. The second step is learning about inheritance, which in JavaScript is called *Prototypal Inheritance*.
+
