@@ -1,6 +1,6 @@
 #Object Oriented JavaScript
 
-Since JavaScript is a functional programming language (everything is a function!), you don't have classes and instances like an object-oriented language has in the conventional sense. In order to simulate classes we use what are called constructors.
+Since JavaScript is a functional programming language, you don't have classes and instances like an object-oriented language has in the conventional sense. In order to simulate classes we use what are called constructors.
 
 ##Constructors
 
@@ -10,7 +10,7 @@ Object, Array, Function, etc.. (Notice they are always capitalized!)
 
 ```javascript
 var str = new String("Electroencephalographically");
-var arr = new Array(10);
+var arr = new Array(10);  // arr = [ , , , , , , , , , ]
 var obj = new Object({ name: "David", age: "unknown" });
 ```
 
